@@ -1,4 +1,4 @@
-
+'use client'
 import { addOrder } from '../(server)/actions/order'
 
 function page({params}) {

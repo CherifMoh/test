@@ -10,10 +10,13 @@ export async function dbConnect(domain) {
   }
 
   try {
+    if(!domain || domain === "undefined"){
+      domain = "global"
+    }
     // Extract the base URI and append the domain as the database name
     const baseUri = process.env.MongoDB_URI.split("?")[0]; // Get the URI before the query params
     const queryParams = process.env.MongoDB_URI.split("?")[1]; // Get the query params
-    const dbUri = `${baseUri}${domain}?${queryParams}`; // Construct the new URI
+    const dbUri = `${baseUri}${domain || "global"}?${queryParams}`; // Construct the new URI
     console.log(dbUri)
     const db = await mongoose.connect(dbUri);
 

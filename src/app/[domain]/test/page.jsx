@@ -1,4 +1,7 @@
 import axios from "axios"
+import {addWilaya, getWilayaCodeByName, getWilayaNameByCode} from "../../(server)/actions/wilayas"
+
+
 
 async function page({params}) {
 
@@ -12,17 +15,21 @@ async function page({params}) {
   }
 
 
-  const OrdersEle = Orders.map((order) => {
-    return (
-      <div>
-        <p>{order.name}</p>
-      </div>
-    )
-  })
+  // const OrdersEle = Orders.map((order) => {
+  //   return (
+  //     <div>
+  //       <p>{order.name}</p>
+  //     </div>
+  //   )
+  // })
 
+  // const res = await getWilayaNameByCode(11)
+  const res = await getWilayaCodeByName('Tamanrasset')
+
+  console.log(res)
   return (
     <div>
-      {OrdersEle}
+      {/* {OrdersEle} */}
     </div>
   )
 }
