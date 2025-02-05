@@ -1,3 +1,4 @@
+'use server'
 import { dbConnect } from "../../lib/dbConnect";
 import Wilaya from "../models/wilayas";
 
@@ -65,7 +66,7 @@ const wilayasData = [
 
 export async function addWilaya(){ 
 try{
-    await dbConnect()
+    await dbConnect("global")
     const res = await Wilaya.create(wilayasData)   
 
     return res 
@@ -77,6 +78,7 @@ try{
 
 export async function getWilayaNameByCode(code) {
     try {
+      await dbConnect("global")
       const wilaya = await Wilaya.findOne({ code });
       if (!wilaya) {
         throw new Error(`No wilaya found with code ${code}`);
@@ -86,20 +88,20 @@ export async function getWilayaNameByCode(code) {
       console.error('Error getting wilaya name:', error);
       throw error;
     }
-  }
+}
   
-  // Function to convert wilaya name to code
 export async function getWilayaCodeByName(name) {
     try {
-        const wilaya = await Wilaya.findOne({ 
-        name: { $regex: new RegExp(name, 'i') } 
-        });
-        if (!wilaya) {
-        throw new Error(`No wilaya found with name ${name}`);
-        }
-        return wilaya.code;
+      await dbConnect("global")
+      const wilaya = await Wilaya.findOne({ 
+      name: { $regex: new RegExp(name, 'i') } 
+      });
+      if (!wilaya) {
+      // throw new Error(`No wilaya found with name ${name}`);
+      }
+      return wilaya?.code;
     } catch (error) {
-        console.error('Error getting wilaya code:', error);
+        console.error('Error getting wilaya name:', error);
         throw error;
     }
 }

@@ -1,3 +1,4 @@
+'use server'
 import crypto from 'crypto';
 
 const algorithm = 'aes-256-cbc';
