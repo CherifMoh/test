@@ -2,6 +2,7 @@
 
 import { dbConnect } from "../../../lib/dbConnect";
 import Stock from "../../models/stock";
+import {addToStockArchive} from './archive'
 
 export async function addToStock(domain, product, qnt, price) {
     if (!domain || !product || typeof qnt === 'undefined' || typeof price === 'undefined') {
@@ -41,7 +42,7 @@ export async function addToStock(domain, product, qnt, price) {
 
         // Calculate new values
         const newTotalQnt = (stock.totalQnt || 0) + qnt;
-        const newTotalPrice = (stock.totalPrice || 0) + (qnt * price);
+        const newTotalPrice = ((stock.totalPrice || 0) + (qnt * price)).toFixed(2);
         const newUnitPrice = (newTotalPrice / newTotalQnt).toFixed(2); 
 
         // Update stock 
@@ -71,7 +72,9 @@ export async function addToStock(domain, product, qnt, price) {
             return
         }
 
-        return updatedStock;
+        const archived = await addToStockArchive(domain,product,qnt,price,updatedStock.totalQnt,updatedStock.unitPrice,updatedStock.totalPrice,'دخول')
+
+        return {updatedStock, archived};
 
     } catch (error) {
         console.error('Error in addToStock:', error);
@@ -104,7 +107,7 @@ export async function RemoveFromStock(domain, product, qnt) {
 
         // Calculate new values
         const newTotalQnt = (stock.totalQnt || 0) - qnt;
-        const newTotalPrice = (stock.totalPrice || 0) - (qnt * stock.unitPrice);
+        const newTotalPrice = ((stock.totalPrice || 0) - (qnt * stock.unitPrice)).toFixed(2);
         const newUnitPrice = (newTotalPrice / newTotalQnt).toFixed(2); 
 
         // Update stock 
@@ -132,6 +135,8 @@ export async function RemoveFromStock(domain, product, qnt) {
         if (!updatedStock) {
             throw new Error('Failed to update stock');
         }
+
+        const archived = await addToStockArchive(domain,product,qnt,stock.unitPrice,updatedStock.totalQnt,updatedStock.unitPrice,updatedStock.totalPrice,'خروج')
 
         return updatedStock;
 
