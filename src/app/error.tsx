@@ -1,9 +1,9 @@
 'use client'
 
-function Error({ error }: { error: Error }) {
+function errorBoundary({ error }: { error: Error }) {
   return (
     <div>{error.message}</div>
   )
 }
 
-export default Error
+export default errorBoundary

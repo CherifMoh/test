@@ -1,11 +1,10 @@
 import mongoose from "mongoose"; 
-// import { generateUniqueString } from "../lib/utils";
+
 
 const OrderSchem = new mongoose.Schema({
     tracking: {
         type: String,
         required: false,
-        // default: ()=> generateUniqueString(9)
     },
     name: {
         type: String,
@@ -49,8 +48,8 @@ const OrderSchem = new mongoose.Schema({
         type: String,
         required: false
     },
-    shippingMethod: {
-        type: String,
+    stopDesk: {
+        type: Boolean,
         required: false
     },
     shippingPrice: {
@@ -85,10 +84,10 @@ const OrderSchem = new mongoose.Schema({
         type: String,
         default: ''
     },
-    suorce:{
+    source: {
         type: String,
         default: 'tasyir'
-    },
+    }
     
 },{timestamps: true})
 
