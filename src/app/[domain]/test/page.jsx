@@ -4,7 +4,7 @@ import {addWilaya, getWilayaCodeByName, getWilayaNameByCode} from "../../(server
 import {addToStock, RemoveFromStock, updateStockStatus} from "../../(server)/actions/stock/stock"
 import { use, useEffect, useState } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { addOrder, deleteOrder, generateUniqueString } from "../../(server)/actions/order"
+import { addOrder, deleteOrder, generateUniqueString, updateOrder } from "../../(server)/actions/order"
 
 async function fetchOrders(query) {
   const res = await axios.get('/api/orders', { params:  query  });
@@ -20,7 +20,7 @@ function page({params}) {
 
   const query = {
     domain:domain,
-    fields:'name tracking'
+    // fields:'name tracking'
   }
 
   const { data: Orders, isLoading, isError, error } = useQuery({
@@ -74,9 +74,14 @@ function page({params}) {
 
   async function handelAdd(){
     // const news = await addOrder(domain,testOrder2)
-    const newst = await deleteOrder(domain,'67a4781f78425a175239ff25')
+    // const news = await deleteOrder(domain,'67a4781f78425a175239ff25')
+    const news = await updateOrder(
+      domain,
+      '67a4786978425a175239ff35',
+      {name:'Khaled Mansour'}
+    )
     queryClient.invalidateQueries(['orders',query])
-    console.log(newst)
+    console.log(news)
   }
   
   

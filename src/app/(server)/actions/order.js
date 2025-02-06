@@ -65,3 +65,36 @@ export async function deleteOrder(domain, id){
   }
 }
 
+export async function updateOrder(domain, orderId, data) {
+  try {
+    if (!domain || !orderId || !data) {
+      throw new Error("Missing required parameters");
+    }
+
+    // Connect to the appropriate database
+    await dbConnect(domain);
+
+    // Update the order and get the updated document
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { $set: data },
+      { 
+        new: true,  // Return the updated document
+        runValidators: true  // Run schema validators
+      }
+    );
+
+    if (!updatedOrder) {
+      throw new Error("Order not found");
+    }
+
+    return { success: true, data: updatedOrder };
+
+  } catch (error) {
+    console.error('Update order error:', error);
+    return { 
+      success: false, 
+      error: error.message || "Failed to update order" 
+    };
+  }
+}
